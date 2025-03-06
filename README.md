@@ -5,6 +5,6 @@ Additional app funtions:
 
 * User authentication
 * Cloud history storage
-* Coffee price calculator
+* Coffee spending calculator
 
 App uses fanta.css and pre-formated css from [James](https://github.com/jamezmca)
