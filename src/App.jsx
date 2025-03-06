@@ -7,7 +7,7 @@ import Stats from "./components/Stats"
 
 function App() {
 
-  const isAuthenticated = false
+  const isAuthenticated = true
 
   const authenticatedContent = (
     <>
