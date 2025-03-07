@@ -12,7 +12,7 @@ export function useAuth() {
 export function AuthProvider(props) {
     const { children } = props
 
-    const [globalUser, setglobalUser] = useState(null)
+    const [globalUser, setGlobalUser] = useState(null)
     const [globalData, setGlobalData] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -25,9 +25,9 @@ export function AuthProvider(props) {
     }
 
     function logout() {
-        setUser(null)
+        setGlobalUser(null)
         setGlobalData(null)
-        return signOut
+        return signOut(auth)
     }
 
     function resetPassword(email) {
@@ -39,7 +39,9 @@ export function AuthProvider(props) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             console.log('CURRENT USER: ', user)
-            
+
+            setGlobalUser(user)
+
             // if there is no user, empty the usser state and return from this listner
             if (!user) { 
                 console.log('no active user')

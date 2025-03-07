@@ -2,10 +2,15 @@ import { useState } from "react"
 import { coffeeOptions } from "../utils"
 import Authentication from "./Authentication"
 import Modal from "./Modal"
+import { useAuth } from "../context/AuthConext"
+import { doc, setDoc } from "firebase/firestore"
+import { db } from "../../firebase"
 
 
 export default function CoffeeForm(props) {
     const { isAuthenticated } = props
+
+    const { globalData, setGlobalData, globalUser } = useAuth()
     
     const [showModal, setShowModal] = useState(false)
     const [coffeeSelection, setCoffeeSelection] = useState(null)
@@ -14,14 +19,53 @@ export default function CoffeeForm(props) {
     const [hour, setHour] = useState(0)
     const [minute, setMinute] = useState(0)
 
-
-    function handleSubmit() {
+    async function handleSubmit() {
         if (!isAuthenticated) {
             setShowModal(true)
             return
         }
 
-        console.log(coffeeSelection, showCoffeeTypes, coffeeCost, hour, minute)
+        try {
+            // define guard lause that only return the form if it is comleted
+            if (!coffeeSelection) { return }
+
+            // then we're going to create a new object
+            const newGlobalData = {
+                ...(globalData || {})
+            }
+
+            const nowTime = Date.now()
+            const timeToSubtract = (hour * 60 * 60 * 1000) + (minute * 60 * 1000)
+            const timestamp = nowTime - timeToSubtract
+
+            const newData = {
+                name: coffeeSelection,
+                cost: coffeeCost
+            }
+            newGlobalData[timestamp] = newData
+
+            console.log(timestamp, coffeeSelection, coffeeCost)
+            
+            // update the global state
+            setGlobalData(newGlobalData)
+
+            // persist the data in the firebase firestore
+            const userRef = doc(db, 'users', globalUser.uid)
+            const res = await setDoc(userRef, {
+                [timestamp] : newData
+            }, { merge: true })
+
+            setCoffeeSelection(null)
+            setCoffeeCost(0)
+            setHour(0)
+            setMinute(0)
+        } catch (err) {
+            console.log(err.message)
+        } finally {
+
+        }
+
+        
     }
 
 
