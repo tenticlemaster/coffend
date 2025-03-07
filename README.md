@@ -11,3 +11,5 @@ App uses:
 
 * fanta.css and pre-formated css from [James](https://github.com/jamezmca) for styling
 * firebase for user authentication and data persistance
+
+made with help form this [video](https://www.youtube.com/watch?v=iKpkVKubvKk) by [James](https://github.com/jamezmca)
