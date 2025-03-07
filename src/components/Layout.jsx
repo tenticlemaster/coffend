@@ -1,9 +1,12 @@
 import { useState } from "react"
 import Authentication from "./Authentication"
 import Modal from "./Modal"
+import { useAuth } from "../context/AuthConext"
 
 export default function Layout(props) {
     const { children } = props
+
+    const { globalUser, logout } = useAuth()
 
     const [ showModal, setShowModal ] = useState(false)
 
@@ -13,10 +16,17 @@ export default function Layout(props) {
             <h1 className="text-gradient">CAFFIEND</h1>
             <p>For Coffee Insatiets</p>
         </div>
-        <button onClick={() => { setShowModal(true) }}>
+        {globalUser ? (
+            <button onClick={logout}>
+            <p>Logout</p>
+            <i className="fa-solid fa-mug-saucer"></i>
+            </button>
+        ) : (
+            <button onClick={() => { setShowModal(true) }}>
             <p>Sign up for free</p>
             <i className="fa-solid fa-mug-saucer"></i>
-        </button>
+            </button>
+        )}
       </header>
     )
 
