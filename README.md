@@ -7,4 +7,7 @@ Additional app funtions:
 * Cloud history storage
 * Coffee spending calculator
 
-App uses fanta.css and pre-formated css from [James](https://github.com/jamezmca)
+App uses:
+
+* fanta.css and pre-formated css from [James](https://github.com/jamezmca) for styling
+* firebase for user authentication and data persistance
